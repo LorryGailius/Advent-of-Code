@@ -1,15 +1,16 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text;
+using System.Text.RegularExpressions;
 using Utils;
 
 namespace Year2024.Day03;
 
-// https://adventofcode.com/2024/day/2
+// https://adventofcode.com/2024/day/3
 
 public class Day03 : BaseDay
 {
     protected override string Day { get; } = "Day03";
     protected override Answers Part1Answers { get; } = new(161, 174336360);
-    protected override Answers Part2Answers { get; } = new(4, 476);
+    protected override Answers Part2Answers { get; } = new(48, 88802350);
 
     protected override int Solve(string inputFile, int part)
     {
@@ -23,25 +24,53 @@ public class Day03 : BaseDay
 
     private int SolvePart1(string inputFile)
     {
-        var regex = @"mul\((\d+),(\d+)\)";
-        var text = Input.ToString(inputFile);
-        var matches = Regex.Matches(text, regex).ToList();
-
-        var result = 0;
-
-        foreach (var match in matches)
-        {
-            var value1 = match.Groups[1].Value.ToInt();
-            var value2 = match.Groups[2].Value.ToInt();
-
-            result += value1 * value2;
-        }
-
-        return result;
+        return CalculateMulOperations(Input.ToString(inputFile));
     }
 
     private int SolvePart2(string inputFile)
     {
-        return 0;
+        var input = Input.ToString(inputFile);
+
+        return CalculateMulOperations(GetConditionalInput(input));
+    }
+
+    public int CalculateMulOperations(string input)
+    {
+        return Regex.Matches(input, @"mul\((\d+),(\d+)\)")
+            .Sum(x => x.Groups[1].Value.ToInt() * x.Groups[2].Value.ToInt());
+    }
+
+    public string GetConditionalInput(string input)
+    {
+        const string dontPattern = "don't()";
+        const string doPattern = "do()";
+
+        var outputBuffer = new StringBuilder();
+
+        var read = true;
+
+        for (var i = 0; i < input.Length; i++)
+        {
+            if (i + 6 < input.Length && input.Substring(i, 7) == dontPattern)
+            {
+                read = false;
+                i += 6;
+                continue;
+            }
+
+            if (i + 3 < input.Length && input.Substring(i, 4) == doPattern)
+            {
+                read = true;
+                i += 3;
+                continue;
+            }
+
+            if (read)
+            {
+                outputBuffer.Append(input[i]);
+            }
+        }
+
+        return outputBuffer.ToString();
     }
 }

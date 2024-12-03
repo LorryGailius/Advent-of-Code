@@ -1,13 +1,26 @@
-﻿using Utils;
+﻿using System.ComponentModel;
+using Utils;
+using Xunit.Sdk;
 
 namespace Year2024;
 
 public abstract class BaseDay
 {
     protected abstract string Day { get; }
-    protected abstract int Solve(string inputFile, int part);
     protected abstract Answers Part1Answers { get; }
     protected abstract Answers Part2Answers { get; }
+    protected abstract int SolvePart1(string inputFile);
+    protected abstract int SolvePart2(string inputFile);
+
+    protected int Solve(string inputFile, int part)
+    {
+        return part switch
+        {
+            1 => SolvePart1(inputFile),
+            2 => SolvePart2(inputFile),
+            _ => 0
+        };
+    }
 
     [Theory]
     [InlineData("Sample1.txt")]
@@ -21,7 +34,7 @@ public abstract class BaseDay
     }
 
     [Theory]
-    [InlineData("Sample2.txt")]
+    [InlineData("Sample2.txt"), ]
     [InlineData("Input.txt")]
     public void Part2(string relativeFilePath)
     {

@@ -10,17 +10,7 @@ public class Day02 : BaseDay
     protected override Answers Part1Answers { get; } = new(2, 421);
     protected override Answers Part2Answers { get; } = new(4, 476);
 
-    protected override int Solve(string inputFile, int part)
-    {
-        return part switch
-        {
-            1 => SolvePart1(inputFile),
-            2 => SolvePart2(inputFile),
-            _ => 0
-        };
-    }
-
-    private int SolvePart1(string inputFile)
+    protected override int SolvePart1(string inputFile)
     {
         var lines = Input.ToLines(inputFile);
 
@@ -39,7 +29,7 @@ public class Day02 : BaseDay
         return validReports;
     }
 
-    private int SolvePart2(string inputFile)
+    protected override int SolvePart2(string inputFile)
     {
         var lines = Input.ToLines(inputFile);
 

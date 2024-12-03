@@ -28,17 +28,17 @@ public static class Input
         var result = new List<List<T>>();
 
         var line = stream.ReadLine();
-        var values = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        var values = line.SplitTo<T>();
         var valueCount = values.Length;
 
         Enumerable.Range(0, valueCount).ToList().ForEach(_ => result.Add([]));
 
-        values.Select((value, index) => (value, index)).ToList().ForEach(x => result[x.index].Add((T)Convert.ChangeType(x.value, typeof(T))));
+        result.Select((list, index) => (list, index)).ToList().ForEach(x => x.list.Add(values[x.index]));
 
         while ((line = stream.ReadLine()) != null)
         {
-            values = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            values.Select((value, index) => (value, index)).ToList().ForEach(x => result[x.index].Add((T)Convert.ChangeType(x.value, typeof(T))));
+            values = line.SplitTo<T>();
+            result.Select((list, index) => (list, index)).ToList().ForEach(x => x.list.Add(values[x.index]));
         }
 
         return result;

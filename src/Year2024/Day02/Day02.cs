@@ -28,7 +28,7 @@ public class Day02 : BaseDay
 
         foreach (var line in lines)
         {
-            var values = line.ToIntArray();
+            var values = line.SplitToIntegers();
 
             if (AreValuesValid(values))
             {
@@ -47,7 +47,7 @@ public class Day02 : BaseDay
 
         foreach (var line in lines)
         {
-            var values = line.ToIntArray();
+            var values = line.SplitToIntegers();
 
             if (AreValuesValid(values) || DampenerCanBeApplied(values))
             {

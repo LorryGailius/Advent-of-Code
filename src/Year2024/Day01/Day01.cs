@@ -2,7 +2,7 @@
 
 namespace Year2024.Day01;
 
-/// https://adventofcode.com/2024/day/1
+// https://adventofcode.com/2024/day/1
 
 public class Day01 : BaseDay
 {

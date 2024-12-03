@@ -2,23 +2,28 @@
 
 public static class StringExtensions
 {
-    public static int ToInt(this string s)
+    public static int ToInt(this string input)
     {
-        return int.Parse(s);
+        return Convert.ToInt32(input);
     }
 
-    public static int[] ToIntArray(this string s)
+    public static int[] SplitToIntegers(this string inputString, char separator = ' ')
     {
-        return s.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToInt()).ToArray();
+        return inputString.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Select(x => Convert.ToInt32(x.Trim())).ToArray();
     }
 
-    public static long ToLong(this string s)
+    public static long[] SplitToLongs(this string inputString, char separator = ' ')
     {
-        return long.Parse(s);
+        return inputString.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Select(x => Convert.ToInt64(x.Trim())).ToArray();
     }
 
-    public static long[] ToLongArray(this string s)
+    public static string[] SplitToStrings(this string inputString, char separator = ' ')
     {
-        return s.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLong()).ToArray();
+        return inputString.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToArray();
+    }
+
+    public static T[] SplitTo<T>(this string inputString, char separator = ' ')
+    {
+        return inputString.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Select(x => (T)Convert.ChangeType(x.Trim(), typeof(T))).ToArray();
     }
 }

@@ -1,6 +1,6 @@
-﻿using Utils;
+﻿using Xunit;
 
-namespace Year2024;
+namespace Utils;
 
 public abstract class BaseDay
 {

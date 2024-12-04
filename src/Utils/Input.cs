@@ -1,4 +1,6 @@
-﻿namespace Utils;
+﻿using System.Diagnostics;
+
+namespace Utils;
 
 public static class Input
 {
@@ -40,6 +42,7 @@ public static class Input
         var result = new List<List<T>>();
 
         var line = stream.ReadLine();
+        Debug.Assert(line != null, nameof(line) + " != null");
         var values = line.SplitTo<T>();
         var valueCount = values.Length;
 
@@ -67,8 +70,7 @@ public static class Input
         using var stream = new StreamReader(path);
 
         var result = new List<char[]>();
-        string line;
-        while ((line = stream.ReadLine()) != null)
+        while (stream.ReadLine() is { } line)
         {
             result.Add(line.ToCharArray());
         }

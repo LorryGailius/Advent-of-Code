@@ -1,12 +1,9 @@
-﻿using System.ComponentModel;
-using Utils;
-using Xunit.Sdk;
+﻿using Utils;
 
 namespace Year2024;
 
 public abstract class BaseDay
 {
-    protected abstract string Day { get; }
     protected abstract Answers Part1Answers { get; }
     protected abstract Answers Part2Answers { get; }
     protected abstract int SolvePart1(string inputFile);
@@ -27,7 +24,7 @@ public abstract class BaseDay
     [InlineData("Input.txt")]
     public void Part1(string relativeFilePath)
     {
-        var inputFile = $"{Day}\\{relativeFilePath}";
+        var inputFile = $"{GetType().Name}\\{relativeFilePath}";
         var expectedAnswer = GetExpectedAnswer(relativeFilePath, 1);
         var calculatedAnswer = Solve(inputFile, 1);
         Assert.Equal(expectedAnswer, calculatedAnswer);
@@ -38,7 +35,7 @@ public abstract class BaseDay
     [InlineData("Input.txt")]
     public void Part2(string relativeFilePath)
     {
-        var inputFile = $"{Day}\\{relativeFilePath}";
+        var inputFile = $"{GetType().Name}\\{relativeFilePath}";
         var expectedAnswer = GetExpectedAnswer(relativeFilePath, 2);
         var calculatedAnswer = Solve(inputFile, 2);
         Assert.Equal(expectedAnswer, calculatedAnswer);

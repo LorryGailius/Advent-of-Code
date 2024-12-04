@@ -8,7 +8,6 @@ namespace Year2024.Day03;
 
 public class Day03 : BaseDay
 {
-    protected override string Day { get; } = "Day03";
     protected override Answers Part1Answers { get; } = new(161, 174336360);
     protected override Answers Part2Answers { get; } = new(48, 88802350);
 

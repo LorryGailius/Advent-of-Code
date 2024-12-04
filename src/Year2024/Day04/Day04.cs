@@ -2,9 +2,10 @@
 
 namespace Year2024.Day04;
 
+// https://adventofcode.com/2024/day/4
+
 public class Day04 : BaseDay
 {
-    protected override string Day { get; } = "Day04";
     protected override Answers Part1Answers { get; } = new(18, 2560);
     protected override Answers Part2Answers { get; } = new(9, 1910);
     protected override int SolvePart1(string inputFile)

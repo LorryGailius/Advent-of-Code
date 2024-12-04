@@ -26,4 +26,11 @@ public static class StringExtensions
     {
         return inputString.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Select(x => (T)Convert.ChangeType(x.Trim(), typeof(T))).ToArray();
     }
+
+    public static string ReverseString(this string s)
+    {
+        char[] charArray = s.ToCharArray();
+        Array.Reverse(charArray);
+        return new string(charArray);
+    }
 }

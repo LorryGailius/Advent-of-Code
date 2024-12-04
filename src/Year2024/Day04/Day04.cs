@@ -6,7 +6,7 @@ public class Day04 : BaseDay
 {
     protected override string Day { get; } = "Day04";
     protected override Answers Part1Answers { get; } = new(18, 2560);
-    protected override Answers Part2Answers { get; } = new(9, 0);
+    protected override Answers Part2Answers { get; } = new(9, 1910);
     protected override int SolvePart1(string inputFile)
     {
         var matrix = Input.ToMatrix(inputFile);
@@ -16,23 +16,15 @@ public class Day04 : BaseDay
 
     protected override int SolvePart2(string inputFile)
     {
-        char[][] pattern = {
-            new char[] { 'M', '.', 'S' },
-            new char[] { '.', 'A', '.' },
-            new char[] { 'M', '.', 'S' }
-        };
-
         var matrix = Input.ToMatrix(inputFile);
 
-        return FindPattern(matrix, pattern).Count;
+        return FindPatterns(matrix).Count;
     }
 
-
-
-    static List<(int, int)> FindWord(char[][] board, string word)
+    private static List<(int, int)> FindWord(char[][] board, string word)
     {
-        int rows = board.Length;
-        List<(int, int)> positions = new List<(int, int)>();
+        var rows = board.Length;
+        var positions = new List<(int, int)>();
 
         int[,] directions = {
             { -1, 0 }, // Up
@@ -45,14 +37,14 @@ public class Day04 : BaseDay
             { 1, 1 }   // Diagonal Down-Right
         };
 
-        for (int row = 0; row < rows; row++)
+        for (var row = 0; row < rows; row++)
         {
-            int cols = board[row].Length;
-            for (int col = 0; col < cols; col++)
+            var cols = board[row].Length;
+            for (var col = 0; col < cols; col++)
             {
                 if (board[row][col] == word[0])
                 {
-                    for (int d = 0; d < directions.GetLength(0); d++)
+                    for (var d = 0; d < directions.GetLength(0); d++)
                     {
                         int newRow = row, newCol = col;
                         int i;
@@ -75,5 +67,48 @@ public class Day04 : BaseDay
             }
         }
         return positions;
+    }
+
+    private static List<(int, int)> FindPatterns(char[][] board)
+    {
+        var rows = board.Length;
+        var positions = new List<(int, int)>();
+
+        for (var row = 0; row < rows; row++)
+        {
+            var cols = board[row].Length;
+            for (var col = 0; col < cols; col++)
+            {
+                if (row + 2 < rows && col + 2 < cols)
+                {
+                    char[][] pattern =
+                    [
+                        [board[row][col], board[row][col + 1], board[row][col + 2]],
+                        [board[row + 1][col], board[row + 1][col + 1], board[row + 1][col + 2]],
+                        [board[row + 2][col], board[row + 2][col + 1], board[row + 2][col + 2]]
+                    ];
+
+                    if (IsPatternCorrect(pattern))
+                    {
+                        positions.Add((row, col));
+                    }
+                }
+            }
+        }
+
+        return positions;
+    }
+
+    private static bool IsPatternCorrect(char[][] pattern)
+    {
+        const string patternMatch = "MAS";
+        
+        var word1 = $"{pattern[0][0]}{pattern[1][1]}{pattern[2][2]}";
+        var word2 = $"{pattern[2][0]}{pattern[1][1]}{pattern[0][2]}";
+
+        var isWord1Correct = word1 == patternMatch || word1.ReverseString() == patternMatch;
+        var isWord2Correct = word2 == patternMatch || word2.ReverseString() == patternMatch;
+
+        return isWord1Correct && isWord2Correct;
     }
 }

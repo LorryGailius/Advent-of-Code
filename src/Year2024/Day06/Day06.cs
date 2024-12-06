@@ -17,7 +17,6 @@ public class Day06 : BaseDay
         return GetPointsVisited(map, guard).Count;
     }
 
-    // Takes a while to execute on the input file
     protected override int SolvePart2(string inputFile)
     {
         var map = Input.ToMatrix(inputFile);
@@ -91,6 +90,8 @@ public class Day06 : BaseDay
     {
         map[obstaclePoint.Y][obstaclePoint.X] = 'O';
 
+        var previousDirections = new List<Point>();
+
         while (true)
         {
             var row = guard.Position.Y;
@@ -121,12 +122,13 @@ public class Day06 : BaseDay
 
             if (map[row][col] is '#' or 'O')
             {
-                if(guard.Path.Count(x => x == guard.Position with { Direction = guard.Direction }) > 1)
+                if(previousDirections.Contains(guard.Position with {Direction = guard.Direction}))
                 {
                     map[obstaclePoint.Y][obstaclePoint.X] = '.';
                     return true;
                 }
 
+                previousDirections.Add(guard.Position with { Direction = guard.Direction });
                 guard.Turn();
             }
             else

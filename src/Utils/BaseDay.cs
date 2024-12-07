@@ -6,10 +6,10 @@ public abstract class BaseDay
 {
     protected abstract Answers Part1Answers { get; }
     protected abstract Answers Part2Answers { get; }
-    protected abstract int SolvePart1(string inputFile);
-    protected abstract int SolvePart2(string inputFile);
+    protected abstract dynamic SolvePart1(string inputFile);
+    protected abstract dynamic SolvePart2(string inputFile);
 
-    protected int Solve(string inputFile, int part)
+    protected dynamic Solve(string inputFile, int part)
     {
         return part switch
         {
@@ -41,7 +41,7 @@ public abstract class BaseDay
         Assert.Equal(expectedAnswer, calculatedAnswer);
     }
 
-    private int GetExpectedAnswer(string relativeFilePath, int i)
+    private dynamic GetExpectedAnswer(string relativeFilePath, int i)
     {
         return i switch
         {

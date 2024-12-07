@@ -11,12 +11,12 @@ public class Day03 : BaseDay
     protected override Answers Part1Answers { get; } = new(161, 174336360);
     protected override Answers Part2Answers { get; } = new(48, 88802350);
 
-    protected override int SolvePart1(string inputFile)
+    protected override dynamic SolvePart1(string inputFile)
     {
         return CalculateMulOperations(Input.ToString(inputFile));
     }
 
-    protected override int SolvePart2(string inputFile)
+    protected override dynamic SolvePart2(string inputFile)
     {
         var input = Input.ToString(inputFile);
 

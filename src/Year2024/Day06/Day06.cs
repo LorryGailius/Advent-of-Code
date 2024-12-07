@@ -9,7 +9,7 @@ public class Day06 : BaseDay
     protected override Answers Part1Answers => new(41, 5030);
     protected override Answers Part2Answers => new(6, 1928);
 
-    protected override int SolvePart1(string inputFile)
+    protected override dynamic SolvePart1(string inputFile)
     {
         var map = Input.ToMatrix(inputFile);
         var guard = GetGuard(map);
@@ -17,7 +17,7 @@ public class Day06 : BaseDay
         return GetPointsVisited(map, guard).Count;
     }
 
-    protected override int SolvePart2(string inputFile)
+    protected override dynamic SolvePart2(string inputFile)
     {
         var map = Input.ToMatrix(inputFile);
         var guard = GetGuard(map);

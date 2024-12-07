@@ -9,7 +9,7 @@ public class Day01 : BaseDay
     protected override Answers Part1Answers { get; } = new(11, 1189304);
     protected override Answers Part2Answers { get; } = new(31, 24349736);
 
-    protected override int SolvePart1(string inputFile)
+    protected override dynamic SolvePart1(string inputFile)
     {
         var lists = Input.ToLists<int>(inputFile);
 
@@ -24,7 +24,7 @@ public class Day01 : BaseDay
         return diff;
     }
 
-    protected override int SolvePart2(string inputFile)
+    protected override dynamic SolvePart2(string inputFile)
     {
         var lists = Input.ToLists<int>(inputFile);
 

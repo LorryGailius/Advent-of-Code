@@ -8,7 +8,7 @@ public class Day05 : BaseDay
 {
     protected override Answers Part1Answers => new(143, 5948);
     protected override Answers Part2Answers => new(123, 3062);
-    protected override int SolvePart1(string inputFile)
+    protected override dynamic SolvePart1(string inputFile)
     {
         var lines = Input.ToLines(inputFile);
 
@@ -18,7 +18,7 @@ public class Day05 : BaseDay
         return CalculateMiddleValue(GetValidUpdates(updates, rules));
     }
 
-    protected override int SolvePart2(string inputFile)
+    protected override dynamic SolvePart2(string inputFile)
     {
         var lines = Input.ToLines(inputFile);
 

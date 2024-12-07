@@ -8,14 +8,14 @@ public class Day04 : BaseDay
 {
     protected override Answers Part1Answers { get; } = new(18, 2560);
     protected override Answers Part2Answers { get; } = new(9, 1910);
-    protected override int SolvePart1(string inputFile)
+    protected override dynamic SolvePart1(string inputFile)
     {
         var matrix = Input.ToMatrix(inputFile);
 
         return FindWord(matrix, "XMAS").Count;
     }
 
-    protected override int SolvePart2(string inputFile)
+    protected override dynamic SolvePart2(string inputFile)
     {
         var matrix = Input.ToMatrix(inputFile);
 

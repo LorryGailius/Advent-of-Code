@@ -1,3 +1,3 @@
 ﻿namespace Utils;
 
-public record Answers(int SampleAnswer, int InputAnswer);
+public record Answers(dynamic SampleAnswer, dynamic InputAnswer);

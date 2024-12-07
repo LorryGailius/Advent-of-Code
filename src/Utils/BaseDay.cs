@@ -15,7 +15,7 @@ public abstract class BaseDay
         {
             1 => SolvePart1(inputFile),
             2 => SolvePart2(inputFile),
-            _ => 0
+            _ => throw new ArgumentOutOfRangeException(nameof(part), part, "Part must be 1 or 2")
         };
     }
 
@@ -41,23 +41,23 @@ public abstract class BaseDay
         Assert.Equal(expectedAnswer, calculatedAnswer);
     }
 
-    private dynamic GetExpectedAnswer(string relativeFilePath, int i)
+    private dynamic GetExpectedAnswer(string relativeFilePath, int part)
     {
-        return i switch
+        return part switch
         {
             1 => relativeFilePath switch
             {
                 "Sample1.txt" => Part1Answers.SampleAnswer,
                 "Input.txt" => Part1Answers.InputAnswer,
-                _ => 0
+                _ => throw new ArgumentOutOfRangeException(nameof(relativeFilePath), relativeFilePath, "Invalid file path")
             },
             2 => relativeFilePath switch
             {
                 "Sample2.txt" => Part2Answers.SampleAnswer,
                 "Input.txt" => Part2Answers.InputAnswer,
-                _ => 0
+                _ => throw new ArgumentOutOfRangeException(nameof(relativeFilePath), relativeFilePath, "Invalid file path")
             },
-            _ => 0
+            _ => throw new ArgumentOutOfRangeException(nameof(part), part, "Part must be 1 or 2")
         };
     }
 }

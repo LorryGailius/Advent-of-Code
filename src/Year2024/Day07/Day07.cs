@@ -2,6 +2,8 @@
 
 namespace Year2024.Day07;
 
+// https://adventofcode.com/2024/day/7
+
 public class Day07 : BaseDay
 {
     protected override Answers Part1Answers => new(3749, 3351424677624);

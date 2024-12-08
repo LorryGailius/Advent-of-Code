@@ -2,6 +2,8 @@
 
 namespace Year2024.Day08;
 
+// https://adventofcode.com/2024/day/8
+
 public class Day08 : BaseDay
 {
     protected override Answers Part1Answers => new(14, 261);
@@ -31,6 +33,7 @@ public class Day08 : BaseDay
     private List<SatelliteGroup> GetSatelliteGroups(List<Satellite> satellites, int lengthX, int lengthY, bool repeating = false)
     {
         var satelliteGroups = new List<SatelliteGroup>();
+
         for (var i = 0; i < satellites.Count; i++)
         {
             for (var j = i + 1; j < satellites.Count; j++)
@@ -47,36 +50,28 @@ public class Day08 : BaseDay
         return satelliteGroups;
     }
 
-    private List<Point> GetAntinodes(Satellite sat1, Satellite sat2, int lengthX, int lengthY, bool repeating = false)
+    private List<Point2D> GetAntinodes(Satellite sat1, Satellite sat2, int lengthX, int lengthY, bool repeating = false)
     {
-        List<Point> antinodes = [];
+        List<Point2D> antinodes = [];
 
-        var diff = new Point(
-            Math.Abs(sat1.Position.X - sat2.Position.X),
-            Math.Abs(sat1.Position.Y - sat2.Position.Y)
-        );
+        var diff = sat1.Position - sat2.Position;
 
         if (diff.X == 0 || diff.Y == 0)
         {
             return [];
         }
 
-        var direction = new Point(
-            sat1.Position.X < sat2.Position.X ? 1 : -1,
-            sat1.Position.Y < sat2.Position.Y ? 1 : -1
-        );
-
         if (!repeating)
         {
-            var antinode1 = CreateOffset(sat1.Position, direction, diff * 2);
-            var antinode2 = CreateOffset(sat2.Position, direction, -diff * 2);
+            var antinode1 = sat1.Position - diff * 2;
+            var antinode2 = sat2.Position + diff * 2;
 
-            if (antinode1.X >= 0 && antinode1.X <= lengthX && antinode1.Y >= 0 && antinode1.Y <= lengthY)
+            if (antinode1.IsWithinBounds((lengthX, lengthY)))
             {
                 antinodes.Add(antinode1);
             }
 
-            if (antinode2.X >= 0 && antinode2.X <= lengthX && antinode2.Y >= 0 && antinode2.Y <= lengthY)
+            if (antinode2.IsWithinBounds((lengthX, lengthY)))
             {
                 antinodes.Add(antinode2);
             }
@@ -85,13 +80,9 @@ public class Day08 : BaseDay
         {
             for (var i = 1; ; i++)
             {
-                var newAntinode = CreateOffset(
-                    sat1.Position,
-                    direction,
-                    diff * i
-                );
+                var newAntinode = sat1.Position - diff * i;
 
-                if (!IsPointWithinBounds(newAntinode, lengthX, lengthY))
+                if(!newAntinode.IsWithinBounds(new Point2D(lengthX, lengthY)))
                 {
                     break;
                 }
@@ -101,13 +92,9 @@ public class Day08 : BaseDay
 
             for (var i = 1; ; i++)
             {
-                var newAntinode = CreateOffset(
-                    sat2.Position,
-                    -direction,
-                    diff * i
-                );
+                var newAntinode = sat2.Position + diff * i;
 
-                if (!IsPointWithinBounds(newAntinode, lengthX, lengthY))
+                if (!newAntinode.IsWithinBounds(new Point2D(lengthX, lengthY)))
                 {
                     break;
                 }
@@ -130,44 +117,24 @@ public class Day08 : BaseDay
                 {
                     continue;
                 }
-                satellites.Add(new Satellite(matrix[i][j], new Point(j, i)));
+
+                var id = matrix[i][j];
+                Point2D position = new(j, i);
+
+                satellites.Add(new (id, position));
             }
         }
         return satellites;
     }
 
-    private static Point CreateOffset(Point position, Point direction, Point amount)
-    {
-        return new Point(
-            position.X + direction.X * amount.X,
-            position.Y + direction.Y * amount.Y
-        );
-    }
-
-
-    private static bool IsPointWithinBounds(Point point, int lengthX, int lengthY)
-    {
-        return point.X >= 0 && point.X <= lengthX && point.Y >= 0 && point.Y <= lengthY;
-    }
-
     internal record SatelliteGroup(
         Satellite Sat1,
         Satellite Sat2,
-        List<Point> Antinodes
+        List<Point2D> Antinodes
     );
 
     internal record Satellite(
         char Id,
-        Point Position
+        Point2D Position
     );
-
-    internal record Point(
-        int X,
-        int Y
-    )
-    {
-        public static Point operator -(Point p) => new(-p.X, -p.Y);
-
-        public static Point operator *(Point p, int n) => new(p.X * n, p.Y * n);
-    };
 }

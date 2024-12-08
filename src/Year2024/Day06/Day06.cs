@@ -25,7 +25,7 @@ public class Day06 : BaseDay
         return GetAvailableObstaclePositions(map, guard).Count;
     }
 
-    private static List<Point> GetPointsVisited(char[][] map, Guard guard)
+    private static List<VectorPoint> GetPointsVisited(char[][] map, Guard guard)
     {
         while (true)
         {
@@ -63,34 +63,33 @@ public class Day06 : BaseDay
             }
         }
 
-        return guard.Path.DistinctBy(p => (p.X, p.Y)).ToList();
+        return guard.Path.DistinctBy(p => p.Coordinates).ToList();
     }
 
-    private static List<Point> GetAvailableObstaclePositions(char[][] map, Guard guard)
+    private static List<Point2D> GetAvailableObstaclePositions(char[][] map, Guard guard)
     {
-        List<Point> availableObstaclePositions = [];
+        List<Point2D> availableObstaclePositions = [];
 
-        var availablePoints = GetPointsVisited(map, new Guard(guard.Position, guard.Path.ToList())).DistinctBy(x => (x.X, x.Y)).Except([guard.Path[0]]);
+        var availablePoints = GetPointsVisited(map, new Guard(guard.Position, guard.Path)).Skip(1);
 
         foreach (var availableObstaclePosition in availablePoints)
         {
-            // create a copy of the map and the guard
-            var guardCopy = new Guard(guard.Position, []);
+            var newGuard = new Guard(guard.Position, []);
 
-            if (IsObstacleCausingLoop(map, availableObstaclePosition, guardCopy))
+            if (IsObstacleCausingLoop(map, availableObstaclePosition.Coordinates, newGuard))
             {
-                availableObstaclePositions.Add(availableObstaclePosition);
+                availableObstaclePositions.Add(availableObstaclePosition.Coordinates);
             }
         }
 
         return availableObstaclePositions;
     }
 
-    private static bool IsObstacleCausingLoop(char[][] map, Point obstaclePoint, Guard guard)
+    private static bool IsObstacleCausingLoop(char[][] map, Point2D obstaclePoint, Guard guard)
     {
         map[obstaclePoint.Y][obstaclePoint.X] = 'O';
 
-        var previousDirections = new List<Point>();
+        var previousDirections = new List<VectorPoint>();
 
         while (true)
         {
@@ -118,17 +117,15 @@ public class Day06 : BaseDay
                 break;
             }
 
-            var symbol = map[row][col];
-
             if (map[row][col] is '#' or 'O')
             {
-                if(previousDirections.Contains(guard.Position with {Direction = guard.Direction}))
+                if (previousDirections.Any(p => p.Coordinates == guard.Position && p.Direction == guard.Direction))
                 {
                     map[obstaclePoint.Y][obstaclePoint.X] = '.';
                     return true;
                 }
 
-                previousDirections.Add(guard.Position with { Direction = guard.Direction });
+                previousDirections.Add(new(guard.Position, guard.Direction));
                 guard.Turn();
             }
             else
@@ -142,14 +139,13 @@ public class Day06 : BaseDay
 
     private Guard GetGuard(char[][] map)
     {
-        // search for a ^ symbol in the map
         for (int y = 0; y < map.Length; y++)
         {
             for (int x = 0; x < map[y].Length; x++)
             {
                 if (map[y][x] == '^')
                 {
-                    var startingPoint = new Point(x, y, Direction.Up);
+                    var startingPoint = new VectorPoint((x, y), Direction.Up);
                     return new Guard(startingPoint,[startingPoint]);
                 }
             }
@@ -158,11 +154,24 @@ public class Day06 : BaseDay
         throw new Exception("No guard found");
     }
 
-    internal class Guard(Point position, List<Point> path)
+    internal class Guard()
     {
-        public Point Position { get; set; } = position;
+        public Point2D Position { get; set; }
         public Direction Direction { get; set; } = Direction.Up;
-        public List<Point> Path { get; set; } = path;
+        public List<VectorPoint> Path { get; set; }
+
+        public Guard(VectorPoint position, List<VectorPoint> path) : this()
+        {
+            this.Position = position.Coordinates;
+            this.Direction = Direction.Up;
+            this.Path = path;
+        }
+
+        public Guard(Point2D position, List<VectorPoint> path) : this()
+        {
+            this.Position = position;
+            this.Path = path;
+        }
 
         public void Turn()
         {
@@ -174,24 +183,24 @@ public class Day06 : BaseDay
             switch (Direction)
             {
                 case Direction.Up:
-                    Position = new Point(Position.X, Position.Y - 1, Direction);
+                    Position += new Point2D(0, -1);
                     break;
                 case Direction.Down:
-                    Position = new Point(Position.X, Position.Y + 1, Direction);
+                    Position += new Point2D(0, 1);
                     break;
                 case Direction.Left:
-                    Position = new Point(Position.X - 1, Position.Y, Direction);
+                    Position += new Point2D(-1, 0);
                     break;
                 case Direction.Right:
-                    Position = new Point(Position.X + 1, Position.Y, Direction);
+                    Position += new Point2D(1, 0);
                     break;
             }
 
-            Path.Add(Position);
+            Path.Add(new(Position, Direction));
         }
     }
 
-    internal record Point(int X, int Y, Direction? Direction = null);
+    internal record VectorPoint(Point2D Coordinates, Direction? Direction = null);
 
     internal enum Direction
     {

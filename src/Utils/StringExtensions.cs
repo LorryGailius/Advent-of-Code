@@ -33,4 +33,9 @@ public static class StringExtensions
         Array.Reverse(charArray);
         return new string(charArray);
     }
+
+    public static int ToInt(this char c)
+    {
+        return c.ToString().ToInt();
+    }
 }

@@ -16,8 +16,8 @@ public class Day01 : BaseDay
         var list1 = lists[0];
         var list2 = lists[1];
 
-        list1 = list1.OrderBy(x => x).ToList();
-        list2 = list2.OrderBy(x => x).ToList();
+        list1.Sort();
+        list2.Sort();
 
         var diff = list1.Zip(list2).Sum(x => Math.Abs(x.First - x.Second));
 
@@ -31,8 +31,8 @@ public class Day01 : BaseDay
         var list1 = lists[0];
         var list2 = lists[1];
 
-        list1 = list1.OrderBy(x => x).ToList();
-        list2 = list2.OrderBy(x => x).ToList();
+        list1.Sort();
+        list2.Sort();
 
         var similarityScore = list1.Sum(x =>
         {

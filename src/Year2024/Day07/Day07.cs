@@ -49,7 +49,8 @@ public class Day07 : BaseDay
             return false;
         }
 
-        return CanFormResult(record.Target, record.Values[1..], record.Values[0], concatEnabled);
+        //return CanFormResult(record.Target, record.Values[1..], record.Values[0], concatEnabled);
+        return CanFormResultReverse(record.Values, record.Target, concatEnabled);
     }
 
     private static bool CanFormResult(long target, List<long> nums, long current, bool concatEnabled = false)
@@ -64,6 +65,36 @@ public class Day07 : BaseDay
                (concatEnabled && CanFormResult(target, nums[1..], long.Parse($"{current}{nums[0]}"), concatEnabled));
     }
 
+    private static bool CanFormResultReverse(List<long> nums, long current, bool concatEnabled = false)
+    {
+        if(nums.Count == 1)
+        {
+            return current == nums[0];
+        }
+
+        var last = nums[^1];
+
+        if (current > nums[^1] && CanFormResultReverse(nums[..^1], current - nums[^1], concatEnabled))
+        {
+            return true;
+        }
+
+        if (current % nums[^1] == 0 && CanFormResultReverse(nums[..^1], current / nums[^1], concatEnabled))
+        {
+            return true;
+        }
+
+        if (concatEnabled)
+        {
+            var divideBy = (long)Math.Pow(10, Math.Floor(Math.Log10(nums[^1])) + 1);
+            if (current % divideBy == nums[^1] && CanFormResultReverse(nums[..^1], current / divideBy, concatEnabled))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     private static List<Record> GetValues(string inputFile)
     {

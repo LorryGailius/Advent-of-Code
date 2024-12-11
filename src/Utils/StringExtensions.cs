@@ -7,6 +7,11 @@ public static class StringExtensions
         return Convert.ToInt32(input);
     }
 
+    public static long ToLong(this string input)
+    {
+        return Convert.ToInt64(input);
+    }
+
     public static int[] SplitToIntegers(this string inputString, char separator = ' ')
     {
         return inputString.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Select(x => Convert.ToInt32(x.Trim())).ToArray();

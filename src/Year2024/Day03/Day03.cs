@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
 using Utils;
+using Utils.Extensions;
 
 namespace Year2024.Day03;
 

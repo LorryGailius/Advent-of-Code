@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Utils;
+using Utils.Extensions;
 
 namespace Year2024.Day09;
 

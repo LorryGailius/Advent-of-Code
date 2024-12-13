@@ -3,6 +3,8 @@ using Utils.Extensions;
 
 namespace Year2024.Day12;
 
+// https://adventofcode.com/2024/day/12
+
 public class Day12 : BaseDay
 {
     protected override Answers Part1Answers => new(1930, 1434856);

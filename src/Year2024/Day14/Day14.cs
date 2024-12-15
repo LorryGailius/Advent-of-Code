@@ -1,11 +1,9 @@
 ﻿using System.Diagnostics;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using Utils;
-using static Year2024.Day14.Day14;
 
 namespace Year2024.Day14;
 
+// https://adventofcode.com/2024/day/14
 public class Day14 : BaseDay
 {
     protected override Answers Part1Answers => new(21, 230172768);
